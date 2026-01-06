@@ -6,8 +6,10 @@ public enum PlantState
     Empty,
     Growing,
     NeedsWater,
+    BeingWatered,
     Ready
 }
+
 public class ThymePlot : MonoBehaviour
 {
     public PlantState state = PlantState.Empty;
@@ -15,6 +17,9 @@ public class ThymePlot : MonoBehaviour
     public Sprite emptySprite;
     public Sprite growingSprite;
     public Sprite needsWaterSprite;
+
+    public Sprite beingWateredSprite;
+
     public Sprite readySprite;
 
     private SpriteRenderer sr;
@@ -45,24 +50,28 @@ public class ThymePlot : MonoBehaviour
 
     void UpdateVisual()
     {
-        if (sr == null) return;
+    if (sr == null) return;
 
-        switch (state)
+    switch (state)
         {
-            case PlantState.Empty:
-                sr.sprite = emptySprite;
-                break;
-            case PlantState.Growing:
-                sr.sprite = growingSprite;
-                break;
-            case PlantState.NeedsWater:
-                sr.sprite = needsWaterSprite;
-                break;
-            case PlantState.Ready:
-                sr.sprite = readySprite;
-                break;
-        }
+        case PlantState.Empty:
+            sr.sprite = emptySprite;
+            break;
+        case PlantState.Growing:
+            sr.sprite = growingSprite;
+            break;
+        case PlantState.NeedsWater:
+            sr.sprite = needsWaterSprite;
+            break;
+        case PlantState.BeingWatered:
+            sr.sprite = beingWateredSprite != null ? beingWateredSprite : needsWaterSprite;
+            break;
+        case PlantState.Ready:
+            sr.sprite = readySprite;
+            break;
+        }   
     }
+
 
     public void Plant()
     {
@@ -100,16 +109,39 @@ public class ThymePlot : MonoBehaviour
 
     public void Water()
     {
-        Debug.Log("ThymePlot.Water() called on " + gameObject.name + " state=" + state, this);
-        if (state != PlantState.NeedsWater) return;
+    Debug.Log("ThymePlot.Water() called on " + gameObject.name + " state=" + state, this);
+    if (state != PlantState.NeedsWater) return;
 
-        if (growthCoroutine != null)
-        {
-            StopCoroutine(growthCoroutine);
-            growthCoroutine = null;
-        }
-        growthCoroutine = StartCoroutine(SecondGrowRoutine());
+    if (growthCoroutine != null)
+    {
+        StopCoroutine(growthCoroutine);
+        growthCoroutine = null;
     }
+
+    growthCoroutine = StartCoroutine(WateringRoutine());
+    }   
+
+    IEnumerator WateringRoutine()
+    {
+    state = PlantState.BeingWatered;
+    UpdateVisual();
+    Debug.Log("Watering started on " + gameObject.name, this);
+
+    float t = 0f;
+    while (t < waterTime)
+    {
+        t += Time.deltaTime;
+        yield return null;
+    }
+
+    state = PlantState.Ready;
+    UpdateVisual();
+    Debug.Log("Watering finished on " + gameObject.name + ". Now Ready.", this);
+
+    growthCoroutine = null;
+    }
+
+
 
     IEnumerator SecondGrowRoutine()
     {

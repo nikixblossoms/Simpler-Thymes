@@ -145,13 +145,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52766551}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 318214690}
-  m_Father: {fileID: 96370147}
+  m_Father: {fileID: 892071663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -204,7 +204,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 474264368}
         m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
-        m_MethodName: GoToFarm
+        m_MethodName: GoToKitchen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -349,7 +349,6 @@ RectTransform:
   - {fileID: 717566029}
   - {fileID: 303209535}
   - {fileID: 1642890247}
-  - {fileID: 52766552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1385,6 +1384,7 @@ RectTransform:
   - {fileID: 1881369377}
   - {fileID: 1692073795}
   - {fileID: 144098163}
+  - {fileID: 52766552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1424,10 +1424,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   state: 0
-  emptySprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  growingSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  needsWaterSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  readySprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  emptySprite: {fileID: 21300000, guid: 922d457e4233dd643ba2dd634c93dffa, type: 3}
+  growingSprite: {fileID: 21300000, guid: f34b5c54e27eb2146ab0b6568df64efe, type: 3}
+  needsWaterSprite: {fileID: -3596375118084825319, guid: 391ee0cf9750101449aa39fa0384eaf3, type: 3}
+  beingWateredSprite: {fileID: 2580480478053731014, guid: fff9d6cfcfde3bf4d80f16618cc69372, type: 3}
+  readySprite: {fileID: -2978808618200810919, guid: 519dce02013b32f48921120199516135, type: 3}
   growTime: 2
   waterTime: 2
 --- !u!61 &1098555680
@@ -1524,7 +1525,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.4339623, g: 0.31650087, b: 0.23335703, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1544,7 +1545,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.49, y: 0, z: 0}
-  m_LocalScale: {x: 7.3000007, y: 7.3000007, z: 7.3000007}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
