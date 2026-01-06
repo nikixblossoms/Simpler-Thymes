@@ -1,5 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using TMPro;
+
+
+
 
 public enum PlantState
 {
@@ -22,6 +27,10 @@ public class ThymePlot : MonoBehaviour
 
     public Sprite readySprite;
 
+    public Canvas progressCanvas;
+    public Image progressFill;
+    public TMP_Text progressText;
+
     private SpriteRenderer sr;
 
     [Tooltip("Seconds the plant spends in the Growing state before needing water")]
@@ -34,6 +43,12 @@ public class ThymePlot : MonoBehaviour
 
     void Awake()
     {
+
+        if (progressCanvas != null)
+        {
+            progressCanvas.gameObject.SetActive(false);
+        }
+
         sr = GetComponent<SpriteRenderer>();
         if (sr == null)
         {
@@ -75,8 +90,9 @@ public class ThymePlot : MonoBehaviour
 
     public void Plant()
     {
-        Debug.Log("ThymePlot.Plant() called on " + gameObject.name + " state=" + state, this);
+
         if (state != PlantState.Empty) return;
+        ShowProgressUI(false);
 
         // Ensure only one growth coroutine runs at a time
         if (growthCoroutine != null)
@@ -91,21 +107,23 @@ public class ThymePlot : MonoBehaviour
     {
         state = PlantState.Growing;
         UpdateVisual();
-        Debug.Log("GrowRoutine started on " + gameObject.name + " (growTime=" + growTime + ")", this);
+        ShowProgressUI(true);
 
         float t = 0f;
         while (t < growTime)
         {
             t += Time.deltaTime;
+            UpdateProgress(t, growTime);
             yield return null;
         }
 
-        Debug.Log("GrowRoutine completed on " + gameObject.name + ". Now NeedsWater.", this);
+        ShowProgressUI(false);
         state = PlantState.NeedsWater;
         UpdateVisual();
 
         growthCoroutine = null;
     }
+
 
     public void Water()
     {
@@ -123,23 +141,25 @@ public class ThymePlot : MonoBehaviour
 
     IEnumerator WateringRoutine()
     {
-    state = PlantState.BeingWatered;
-    UpdateVisual();
-    Debug.Log("Watering started on " + gameObject.name, this);
+        state = PlantState.BeingWatered;
+        UpdateVisual();
+        ShowProgressUI(true);
 
-    float t = 0f;
-    while (t < waterTime)
-    {
-        t += Time.deltaTime;
-        yield return null;
+        float t = 0f;
+        while (t < waterTime)
+        {
+            t += Time.deltaTime;
+            UpdateProgress(t, waterTime);
+            yield return null;
+        }
+
+        ShowProgressUI(false);
+        state = PlantState.Ready;
+        UpdateVisual();
+
+        growthCoroutine = null;
     }
 
-    state = PlantState.Ready;
-    UpdateVisual();
-    Debug.Log("Watering finished on " + gameObject.name + ". Now Ready.", this);
-
-    growthCoroutine = null;
-    }
 
 
 
@@ -161,6 +181,7 @@ public class ThymePlot : MonoBehaviour
         growthCoroutine = null;
     }
 
+
     public void Harvest()
     {
         Debug.Log("ThymePlot.Harvest() called on " + gameObject.name + " state=" + state, this);
@@ -177,7 +198,25 @@ public class ThymePlot : MonoBehaviour
             Debug.LogError("GameManager.Instance is null - cannot add thyme", this);
         }
 
+        ShowProgressUI(false);
         state = PlantState.Empty;
         UpdateVisual();
     }
+
+    void ShowProgressUI(bool show)
+    {
+        if (progressCanvas != null)
+            progressCanvas.gameObject.SetActive(show);
+    }
+
+    void UpdateProgress(float current, float max)
+    {
+        if (progressFill != null)
+            progressFill.fillAmount = current / max;
+
+        if (progressText != null)
+            progressText.text = Mathf.Ceil(max - current).ToString();
+    }
+
+    
 }

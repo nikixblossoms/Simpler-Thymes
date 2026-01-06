@@ -405,9 +405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf407ee83a57fb4f8c7bf4e93076b68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  thymeText: {fileID: 0}
-  timeText: {fileID: 0}
-  customerText: {fileID: 0}
+  thymeText: {fileID: 1856169351}
+  timeText: {fileID: 322885577}
+  customerText: {fileID: 2128117721}
 --- !u!114 &58743953
 MonoBehaviour:
   m_ObjectHideFlags: 0
