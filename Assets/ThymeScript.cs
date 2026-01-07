@@ -58,8 +58,6 @@ public class ThymePlot : MonoBehaviour
         {
             Debug.LogWarning("ThymePlot: One or more sprites are not assigned on " + gameObject.name, this);
         }
-
-        Debug.Log("ThymePlot Awake: state=" + state + " on " + gameObject.name, this);
         UpdateVisual();
     }
 
@@ -127,7 +125,6 @@ public class ThymePlot : MonoBehaviour
 
     public void Water()
     {
-    Debug.Log("ThymePlot.Water() called on " + gameObject.name + " state=" + state, this);
     if (state != PlantState.NeedsWater) return;
 
     if (growthCoroutine != null)
@@ -165,16 +162,12 @@ public class ThymePlot : MonoBehaviour
 
     IEnumerator SecondGrowRoutine()
     {
-        Debug.Log("SecondGrowRoutine started on " + gameObject.name + " (waterTime=" + waterTime + ")", this);
-
         float t = 0f;
         while (t < waterTime)
         {
             t += Time.deltaTime;
             yield return null;
         }
-
-        Debug.Log("SecondGrowRoutine completed on " + gameObject.name + ". Now Ready.", this);
         state = PlantState.Ready;
         UpdateVisual();
 
@@ -184,14 +177,12 @@ public class ThymePlot : MonoBehaviour
 
     public void Harvest()
     {
-        Debug.Log("ThymePlot.Harvest() called on " + gameObject.name + " state=" + state, this);
         if (state != PlantState.Ready) return;
 
         int yield = Random.Range(1, 3);
         if (GameManager.Instance != null)
         {
             GameManager.Instance.thymeCount += yield;
-            Debug.Log("Harvested " + yield + " thyme. New total: " + GameManager.Instance.thymeCount, GameManager.Instance);
         }
         else
         {

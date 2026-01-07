@@ -12,6 +12,13 @@ public class GameManager : MonoBehaviour
     public float dayLength = 300f;
     private float timeRemaining;
 
+    // =========================
+    // KITCHEN ORDER STATE
+    // =========================
+    public KitchenManager.RecipeData currentRecipe;
+    public bool[] completedSteps;
+    public bool hasActiveOrder = false;
+
     void Awake()
     {
         if (Instance == null)
@@ -23,7 +30,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
+
 
     void Start()
     {
@@ -50,3 +59,6 @@ public class GameManager : MonoBehaviour
         return timeRemaining;
     }
 }
+
+
+    
