@@ -107,11 +107,14 @@ public class KitchenManager : MonoBehaviour
             return;
 
         // Thyme check
-        if ((step == RecipeStep.Chop || step == RecipeStep.Chop2) &&
-            GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
         {
-            ShowWarning("You do not have enough thyme!");
-            return;
+            if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+            {
+                ShowWarning("You do not have enough thyme!");
+                return;
+            }
+            GameManager.Instance.thymeCount -= currentRecipe.thymeRequired;
         }
 
         // Mark step complete (loop-based, as requested)
@@ -159,7 +162,6 @@ public class KitchenManager : MonoBehaviour
     // =========================
     void FinishRecipe()
     {
-        GameManager.Instance.thymeCount -= currentRecipe.thymeRequired;
         GameManager.Instance.customersServed++;
 
         Debug.Log("Order completed!");
@@ -246,6 +248,7 @@ public class KitchenManager : MonoBehaviour
         if (button == null) return;
 
         button.interactable = enabled;
+        button.gameObject.SetActive(enabled);
 
         CanvasGroup cg = button.GetComponent<CanvasGroup>();
         if (cg == null)
