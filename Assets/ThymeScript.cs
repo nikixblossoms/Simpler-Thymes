@@ -180,14 +180,16 @@ public class ThymePlot : MonoBehaviour
         if (state != PlantState.Ready) return;
 
         int yield = Random.Range(1, 3);
+
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.thymeCount += yield;
+            GameManager.Instance.CollectThyme(yield);
         }
         else
         {
-            Debug.LogError("GameManager.Instance is null - cannot add thyme", this);
+            Debug.LogError("GameManager.Instance is null - cannot collect thyme", this);
         }
+
 
         ShowProgressUI(false);
         state = PlantState.Empty;

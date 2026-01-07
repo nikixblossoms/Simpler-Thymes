@@ -628,6 +628,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1714954980}
   - {fileID: 1856169350}
   - {fileID: 322885576}
   - {fileID: 2128117720}
@@ -2501,7 +2502,6 @@ RectTransform:
   m_Children:
   - {fileID: 966997797}
   - {fileID: 539885841}
-  - {fileID: 1714954980}
   - {fileID: 566422382}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3826,9 +3826,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4b970deafa6314ca862cede012bfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  thymeCount: 0
+  thymeCount: 10
+  thymeCollectedToday: 0
   customersServed: 0
-  customerGoal: 6
+  customerGoal: 2
   dayLength: 300
   currentRecipe:
     recipeName: 
@@ -3877,17 +3878,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714954979}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1356990386}
-  m_Father: {fileID: 844245561}
+  m_Father: {fileID: 58743956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -79.41, y: 8.34}
+  m_AnchoredPosition: {x: 0, y: -472.83}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1714954981
