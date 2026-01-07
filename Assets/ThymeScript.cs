@@ -48,6 +48,11 @@ public class ThymePlot : MonoBehaviour
             progressCanvas.gameObject.SetActive(false);
 
         sr = GetComponent<SpriteRenderer>();
+
+        // Only initialize visuals if no saved state yet
+        if (GameManager.Instance != null && GameManager.Instance.thymePlotsData.Count > 0)
+            return;
+
         UpdateVisual();
         UpdateActionUI();
     }
@@ -68,7 +73,6 @@ public class ThymePlot : MonoBehaviour
 
     void UpdateActionUI()
     {
-        // Only show the correct action button for the current state
         if (plantButton != null)
             plantButton.gameObject.SetActive(state == PlantState.Empty);
         if (waterButton != null)
@@ -85,14 +89,14 @@ public class ThymePlot : MonoBehaviour
         growthCoroutine = StartCoroutine(GrowRoutine());
     }
 
-    IEnumerator GrowRoutine()
+    IEnumerator GrowRoutine(float startTime = 0f)
     {
         state = PlantState.Growing;
         UpdateVisual();
         UpdateActionUI();
         ShowProgressUI(true);
 
-        float t = 0f;
+        float t = startTime;
         while (t < growTime)
         {
             t += Time.deltaTime;
@@ -116,14 +120,14 @@ public class ThymePlot : MonoBehaviour
         growthCoroutine = StartCoroutine(WateringRoutine());
     }
 
-    IEnumerator WateringRoutine()
+    IEnumerator WateringRoutine(float startTime = 0f)
     {
         state = PlantState.BeingWatered;
         UpdateVisual();
         UpdateActionUI();
         ShowProgressUI(true);
 
-        float t = 0f;
+        float t = startTime;
         while (t < waterTime)
         {
             t += Time.deltaTime;
@@ -166,4 +170,62 @@ public class ThymePlot : MonoBehaviour
         if (progressText != null)
             progressText.text = Mathf.Ceil(max - current).ToString();
     }
+
+    // -----------------------------
+    // SAVE & LOAD
+    // -----------------------------
+    // Return the current plot data
+public ThymePlotData GetData()
+{
+    float progress = 0f;
+    if (state == PlantState.Growing || state == PlantState.BeingWatered)
+    {
+        if (progressFill != null)
+            progress = progressFill.fillAmount; // store progress 0-1
+    }
+    return new ThymePlotData(state, progress);
+}
+
+// Load the plot data
+    public void LoadData(ThymePlotData data)
+    {
+        state = data.state;
+        UpdateVisual();
+        UpdateActionUI();
+        
+        if (state == PlantState.Growing || state == PlantState.BeingWatered)
+        {
+            float totalTime = (state == PlantState.Growing) ? growTime : waterTime;
+            float elapsedTime = data.progress * totalTime;
+            if (growthCoroutine != null) StopCoroutine(growthCoroutine);
+
+            growthCoroutine = StartCoroutine(ResumeCoroutine(elapsedTime));
+        }
+    }
+
+    // Resume growing or watering from saved progress
+    private IEnumerator ResumeCoroutine(float elapsed)
+    {
+        float totalTime = (state == PlantState.Growing) ? growTime : waterTime;
+        state = (state == PlantState.Growing) ? PlantState.Growing : PlantState.BeingWatered;
+        UpdateVisual();
+        UpdateActionUI();
+        ShowProgressUI(true);
+
+        float t = elapsed;
+        while (t < totalTime)
+        {
+            t += Time.deltaTime;
+            UpdateProgress(t, totalTime);
+            yield return null;
+        }
+
+        ShowProgressUI(false);
+        state = (state == PlantState.Growing) ? PlantState.NeedsWater : PlantState.Ready;
+        UpdateVisual();
+        UpdateActionUI();
+
+        growthCoroutine = null;
+    }
+
 }
