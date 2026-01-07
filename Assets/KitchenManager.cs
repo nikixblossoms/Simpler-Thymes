@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class KitchenManager : MonoBehaviour
 {
+    // =========================
+    // STEP TYPES
+    // =========================
     public enum RecipeStep
     {
         Chop,
@@ -20,6 +23,9 @@ public class KitchenManager : MonoBehaviour
         Bake
     }
 
+    // =========================
+    // RECIPE DATA
+    // =========================
     [System.Serializable]
     public class RecipeData
     {
@@ -28,7 +34,9 @@ public class KitchenManager : MonoBehaviour
         public RecipeStep[] requiredSteps;
     }
 
-    [Header("References")]
+    // =========================
+    // REFERENCES
+    // =========================
     public RecipeData[] recipes;
     public TMP_Text orderText;
     public TMP_Text warningText;
@@ -47,9 +55,15 @@ public class KitchenManager : MonoBehaviour
     public Button bakeButton;
     public Button giveCustomerButton;
 
+    // =========================
+    // STATE
+    // =========================
     private RecipeData currentRecipe;
     private bool[] completedSteps;
 
+    // =========================
+    // UNITY
+    // =========================
     void Start()
     {
         if (!GameManager.Instance.hasActiveOrder)
@@ -58,6 +72,9 @@ public class KitchenManager : MonoBehaviour
             LoadExistingOrder();
     }
 
+    // =========================
+    // ORDER SETUP
+    // =========================
     void SpawnCustomer()
     {
         currentRecipe = recipes[Random.Range(0, recipes.Length)];
@@ -80,9 +97,16 @@ public class KitchenManager : MonoBehaviour
         UpdateStepButtons();
     }
 
+    // =========================
+    // STEP LOGIC
+    // =========================
     public void DoStep(RecipeStep step)
     {
-        // Check thyme for Chop/Chop2
+        // Only allow the CURRENT required step
+        if (!IsCurrentStep(step))
+            return;
+
+        // Thyme check
         if ((step == RecipeStep.Chop || step == RecipeStep.Chop2) &&
             GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
         {
@@ -90,51 +114,49 @@ public class KitchenManager : MonoBehaviour
             return;
         }
 
-        // Process the step
+        // Mark step complete (loop-based, as requested)
         for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
         {
             if (currentRecipe.requiredSteps[i] == step && !completedSteps[i])
             {
                 completedSteps[i] = true;
-                GameManager.Instance.completedSteps = completedSteps; // persist progress
-                UpdateOrderUI();
+                GameManager.Instance.completedSteps = completedSteps;
                 break;
             }
         }
 
-        // Check if all steps are done after this action
-        CheckRecipeComplete();
+        UpdateOrderUI();
+        UpdateStepButtons();
     }
 
-
-    // Returns true if all steps completed
-    bool CheckRecipeComplete()
-    {
-        for (int i = 0; i < completedSteps.Length; i++)
-        {
-            if (!completedSteps[i])
-                return false; // not complete
-        }
-
-        Debug.Log("All recipe steps done. Ready to serve!");
-        return true;
-    }
-
-    // Called by the Give Customer button
+    // =========================
+    // GIVE CUSTOMER
+    // =========================
     public void GiveToCustomer()
     {
-        // Use CheckRecipeComplete to decide
         if (!CheckRecipeComplete())
         {
             FailOrder("Customer is angry! Order incomplete.");
             return;
         }
 
-        // All steps complete → finish order
         FinishRecipe();
     }
 
+    // =========================
+    // COMPLETION CHECK
+    // =========================
+    bool CheckRecipeComplete()
+    {
+        foreach (bool done in completedSteps)
+            if (!done) return false;
 
+        return true;
+    }
+
+    // =========================
+    // FINISH / FAIL
+    // =========================
     void FinishRecipe()
     {
         GameManager.Instance.thymeCount -= currentRecipe.thymeRequired;
@@ -159,22 +181,29 @@ public class KitchenManager : MonoBehaviour
         GameManager.Instance.completedSteps = null;
     }
 
-    void ShowWarning(string message)
+    // =========================
+    // ORDERED STEP HELPERS
+    // =========================
+    int GetCurrentStepIndex()
     {
-        if (warningText != null)
+        for (int i = 0; i < completedSteps.Length; i++)
         {
-            warningText.text = message;
-            CancelInvoke(nameof(ClearWarning));
-            Invoke(nameof(ClearWarning), 2f);
+            if (!completedSteps[i])
+                return i;
         }
+        return -1;
     }
 
-    void ClearWarning()
+    bool IsCurrentStep(RecipeStep step)
     {
-        if (warningText != null)
-            warningText.text = "";
+        int index = GetCurrentStepIndex();
+        if (index == -1) return false;
+        return currentRecipe.requiredSteps[index] == step;
     }
 
+    // =========================
+    // UI
+    // =========================
     void UpdateOrderUI()
     {
         if (orderText == null) return;
@@ -194,31 +223,59 @@ public class KitchenManager : MonoBehaviour
             "\nThyme Needed: " + currentRecipe.thymeRequired;
     }
 
+    void ShowWarning(string message)
+    {
+        if (warningText == null) return;
+
+        warningText.text = message;
+        CancelInvoke(nameof(ClearWarning));
+        Invoke(nameof(ClearWarning), 2f);
+    }
+
+    void ClearWarning()
+    {
+        if (warningText != null)
+            warningText.text = "";
+    }
+
+    // =========================
+    // BUTTON VISUALS
+    // =========================
+    void SetButtonState(Button button, bool enabled)
+    {
+        if (button == null) return;
+
+        button.interactable = enabled;
+
+        CanvasGroup cg = button.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = button.gameObject.AddComponent<CanvasGroup>();
+
+        cg.alpha = enabled ? 1f : 0.35f;
+    }
+
     void UpdateStepButtons()
     {
-        if (chopButton != null) chopButton.interactable = RecipeUsesStep(RecipeStep.Chop);
-        if (grabPotButton != null) grabPotButton.interactable = RecipeUsesStep(RecipeStep.GrabPot);
-        if (pourWaterInPotButton != null) pourWaterInPotButton.interactable = RecipeUsesStep(RecipeStep.PourWaterInPot);
-        if (placeThymeInCupButton != null) placeThymeInCupButton.interactable = RecipeUsesStep(RecipeStep.PlaceThymeInCup);
-        if (pourWaterInCupButton != null) pourWaterInCupButton.interactable = RecipeUsesStep(RecipeStep.PourWaterInCup);
-        if (chop2Button != null) chop2Button.interactable = RecipeUsesStep(RecipeStep.Chop2);
-        if (grabDoughButton != null) grabDoughButton.interactable = RecipeUsesStep(RecipeStep.GrabDough);
-        if (placeDoughInBowlButton != null) placeDoughInBowlButton.interactable = RecipeUsesStep(RecipeStep.PlaceDoughInBowl);
-        if (placeThymeInBowlButton != null) placeThymeInBowlButton.interactable = RecipeUsesStep(RecipeStep.PlaceThymeInBowl);
-        if (kneadButton != null) kneadButton.interactable = RecipeUsesStep(RecipeStep.Knead);
-        if (formDoughButton != null) formDoughButton.interactable = RecipeUsesStep(RecipeStep.FormDough);
-        if (bakeButton != null) bakeButton.interactable = RecipeUsesStep(RecipeStep.Bake);
-        if (giveCustomerButton != null) giveCustomerButton.interactable = true; // always interactable
+        SetButtonState(chopButton, IsCurrentStep(RecipeStep.Chop));
+        SetButtonState(grabPotButton, IsCurrentStep(RecipeStep.GrabPot));
+        SetButtonState(pourWaterInPotButton, IsCurrentStep(RecipeStep.PourWaterInPot));
+        SetButtonState(placeThymeInCupButton, IsCurrentStep(RecipeStep.PlaceThymeInCup));
+        SetButtonState(pourWaterInCupButton, IsCurrentStep(RecipeStep.PourWaterInCup));
+        SetButtonState(chop2Button, IsCurrentStep(RecipeStep.Chop2));
+        SetButtonState(grabDoughButton, IsCurrentStep(RecipeStep.GrabDough));
+        SetButtonState(placeDoughInBowlButton, IsCurrentStep(RecipeStep.PlaceDoughInBowl));
+        SetButtonState(placeThymeInBowlButton, IsCurrentStep(RecipeStep.PlaceThymeInBowl));
+        SetButtonState(kneadButton, IsCurrentStep(RecipeStep.Knead));
+        SetButtonState(formDoughButton, IsCurrentStep(RecipeStep.FormDough));
+        SetButtonState(bakeButton, IsCurrentStep(RecipeStep.Bake));
+
+        // Always visible
+        SetButtonState(giveCustomerButton, true);
     }
 
-    bool RecipeUsesStep(RecipeStep step)
-    {
-        foreach (RecipeStep s in currentRecipe.requiredSteps)
-            if (s == step) return true;
-        return false;
-    }
-
-    #region Button Wrappers
+    // =========================
+    // BUTTON WRAPPERS
+    // =========================
     public void ChopStep() => DoStep(RecipeStep.Chop);
     public void GrabPotStep() => DoStep(RecipeStep.GrabPot);
     public void PourWaterInPotStep() => DoStep(RecipeStep.PourWaterInPot);
@@ -232,5 +289,4 @@ public class KitchenManager : MonoBehaviour
     public void FormDoughStep() => DoStep(RecipeStep.FormDough);
     public void BakeStep() => DoStep(RecipeStep.Bake);
     public void GiveCustomerButton() => GiveToCustomer();
-    #endregion
 }
