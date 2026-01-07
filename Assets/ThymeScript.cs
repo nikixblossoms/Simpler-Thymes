@@ -3,9 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 
-
-
-
 public enum PlantState
 {
     Empty,
@@ -19,17 +16,22 @@ public class ThymePlot : MonoBehaviour
 {
     public PlantState state = PlantState.Empty;
 
+    [Header("Sprites")]
     public Sprite emptySprite;
     public Sprite growingSprite;
     public Sprite needsWaterSprite;
-
     public Sprite beingWateredSprite;
-
     public Sprite readySprite;
 
+    [Header("UI")]
     public Canvas progressCanvas;
     public Image progressFill;
     public TMP_Text progressText;
+
+    [Header("Action Buttons")]
+    public Button plantButton;
+    public Button waterButton;
+    public Button harvestButton;
 
     private SpriteRenderer sr;
 
@@ -38,66 +40,48 @@ public class ThymePlot : MonoBehaviour
     [Tooltip("Seconds after watering until the plant is Ready")]
     public float waterTime = 2f;
 
-    // Tracks the currently running coroutine so we can stop or avoid duplicates
     private Coroutine growthCoroutine;
 
     void Awake()
     {
-
         if (progressCanvas != null)
-        {
             progressCanvas.gameObject.SetActive(false);
-        }
 
         sr = GetComponent<SpriteRenderer>();
-        if (sr == null)
-        {
-            Debug.LogError("ThymePlot: Missing SpriteRenderer on " + gameObject.name, this);
-        }
-        if (emptySprite == null || growingSprite == null || needsWaterSprite == null || readySprite == null)
-        {
-            Debug.LogWarning("ThymePlot: One or more sprites are not assigned on " + gameObject.name, this);
-        }
         UpdateVisual();
+        UpdateActionUI();
     }
 
     void UpdateVisual()
     {
-    if (sr == null) return;
+        if (sr == null) return;
 
-    switch (state)
+        switch (state)
         {
-        case PlantState.Empty:
-            sr.sprite = emptySprite;
-            break;
-        case PlantState.Growing:
-            sr.sprite = growingSprite;
-            break;
-        case PlantState.NeedsWater:
-            sr.sprite = needsWaterSprite;
-            break;
-        case PlantState.BeingWatered:
-            sr.sprite = beingWateredSprite != null ? beingWateredSprite : needsWaterSprite;
-            break;
-        case PlantState.Ready:
-            sr.sprite = readySprite;
-            break;
-        }   
+            case PlantState.Empty: sr.sprite = emptySprite; break;
+            case PlantState.Growing: sr.sprite = growingSprite; break;
+            case PlantState.NeedsWater: sr.sprite = needsWaterSprite; break;
+            case PlantState.BeingWatered: sr.sprite = beingWateredSprite != null ? beingWateredSprite : needsWaterSprite; break;
+            case PlantState.Ready: sr.sprite = readySprite; break;
+        }
     }
 
+    void UpdateActionUI()
+    {
+        // Only show the correct action button for the current state
+        if (plantButton != null)
+            plantButton.gameObject.SetActive(state == PlantState.Empty);
+        if (waterButton != null)
+            waterButton.gameObject.SetActive(state == PlantState.NeedsWater);
+        if (harvestButton != null)
+            harvestButton.gameObject.SetActive(state == PlantState.Ready);
+    }
 
     public void Plant()
     {
-
         if (state != PlantState.Empty) return;
-        ShowProgressUI(false);
 
-        // Ensure only one growth coroutine runs at a time
-        if (growthCoroutine != null)
-        {
-            StopCoroutine(growthCoroutine);
-            growthCoroutine = null;
-        }
+        if (growthCoroutine != null) StopCoroutine(growthCoroutine);
         growthCoroutine = StartCoroutine(GrowRoutine());
     }
 
@@ -105,6 +89,7 @@ public class ThymePlot : MonoBehaviour
     {
         state = PlantState.Growing;
         UpdateVisual();
+        UpdateActionUI();
         ShowProgressUI(true);
 
         float t = 0f;
@@ -118,28 +103,24 @@ public class ThymePlot : MonoBehaviour
         ShowProgressUI(false);
         state = PlantState.NeedsWater;
         UpdateVisual();
+        UpdateActionUI();
 
         growthCoroutine = null;
     }
-
 
     public void Water()
     {
-    if (state != PlantState.NeedsWater) return;
+        if (state != PlantState.NeedsWater) return;
 
-    if (growthCoroutine != null)
-    {
-        StopCoroutine(growthCoroutine);
-        growthCoroutine = null;
+        if (growthCoroutine != null) StopCoroutine(growthCoroutine);
+        growthCoroutine = StartCoroutine(WateringRoutine());
     }
-
-    growthCoroutine = StartCoroutine(WateringRoutine());
-    }   
 
     IEnumerator WateringRoutine()
     {
         state = PlantState.BeingWatered;
         UpdateVisual();
+        UpdateActionUI();
         ShowProgressUI(true);
 
         float t = 0f;
@@ -153,47 +134,23 @@ public class ThymePlot : MonoBehaviour
         ShowProgressUI(false);
         state = PlantState.Ready;
         UpdateVisual();
+        UpdateActionUI();
 
         growthCoroutine = null;
     }
-
-
-
-
-    IEnumerator SecondGrowRoutine()
-    {
-        float t = 0f;
-        while (t < waterTime)
-        {
-            t += Time.deltaTime;
-            yield return null;
-        }
-        state = PlantState.Ready;
-        UpdateVisual();
-
-        growthCoroutine = null;
-    }
-
 
     public void Harvest()
     {
         if (state != PlantState.Ready) return;
 
         int yield = Random.Range(1, 3);
-
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.CollectThyme(yield);
-        }
-        else
-        {
-            Debug.LogError("GameManager.Instance is null - cannot collect thyme", this);
-        }
 
-
-        ShowProgressUI(false);
         state = PlantState.Empty;
         UpdateVisual();
+        UpdateActionUI();
+        ShowProgressUI(false);
     }
 
     void ShowProgressUI(bool show)
@@ -206,10 +163,7 @@ public class ThymePlot : MonoBehaviour
     {
         if (progressFill != null)
             progressFill.fillAmount = current / max;
-
         if (progressText != null)
             progressText.text = Mathf.Ceil(max - current).ToString();
     }
-
-    
 }
