@@ -3831,7 +3831,7 @@ MonoBehaviour:
   customersServed: 0
   customerGoal: 6
   dayStarted: 0
-  dayLength: 300
+  dayLength: 200
   currentRecipe:
     recipeName: 
     thymeRequired: 0

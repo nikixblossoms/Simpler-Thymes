@@ -178,13 +178,17 @@ public class ThymePlot : MonoBehaviour
 public ThymePlotData GetData()
 {
     float progress = 0f;
+
+    // If plant is mid-progress and player leaves the farm,
+    // snap it to completed progress
     if (state == PlantState.Growing || state == PlantState.BeingWatered)
     {
-        if (progressFill != null)
-            progress = progressFill.fillAmount; // store progress 0-1
+        progress = 1f; // force completion
     }
+
     return new ThymePlotData(state, progress);
 }
+
 
 // Load the plot data
     public void LoadData(ThymePlotData data)
