@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
     public int customersServed = 0;
     public int customerGoal = 6;
 
+    [Header("Day State")]
+    public bool dayStarted = false;
+
+
     [Header("Day Timer")]
     public float dayLength = 300f;
     private float timeRemaining;
@@ -63,16 +67,28 @@ public class GameManager : MonoBehaviour
     {
         timeRemaining = dayLength;
         thymeCollectedToday = 0;
+        dayStarted = false; // timer is paused until Play is pressed
     }
+
 
     void Update()
     {
+        if (!dayStarted)
+            return;
+
         timeRemaining -= Time.deltaTime;
 
         if (timeRemaining <= 0 || customersServed >= customerGoal)
         {
             EndDay();
         }
+    }
+
+    public void StartDay()
+    {
+        ResetDay();                 // optional but recommended
+        dayStarted = true;
+        SceneManager.LoadScene("KitchenScene");
     }
 
     void EndDay()
@@ -90,13 +106,16 @@ public class GameManager : MonoBehaviour
         thymeCount = 0;
         thymeCollectedToday = 0;
         customersServed = 0;
+
         timeRemaining = dayLength;
+        dayStarted = false;
 
         hasActiveOrder = false;
         currentRecipe = null;
         completedSteps = null;
         thymePlotsData.Clear();
     }
+
 
     public void CollectThyme(int amount)
     {
