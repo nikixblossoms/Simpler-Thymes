@@ -3826,10 +3826,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4b970deafa6314ca862cede012bfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  thymeCount: 10
+  thymeCount: 0
   thymeCollectedToday: 0
   customersServed: 0
-  customerGoal: 2
+  customerGoal: 5
   dayLength: 300
   currentRecipe:
     recipeName: 
