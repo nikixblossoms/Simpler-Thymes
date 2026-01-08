@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HowToSceneSwitch : MonoBehaviour
+public class HomeSceneSwitch : MonoBehaviour
 {
     public void Home()
     {

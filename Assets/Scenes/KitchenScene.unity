@@ -3829,7 +3829,8 @@ MonoBehaviour:
   thymeCount: 0
   thymeCollectedToday: 0
   customersServed: 0
-  customerGoal: 5
+  customerGoal: 6
+  dayStarted: 0
   dayLength: 300
   currentRecipe:
     recipeName: 

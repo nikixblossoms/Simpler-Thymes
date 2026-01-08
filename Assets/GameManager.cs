@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         timeRemaining = dayLength;
         thymeCollectedToday = 0;
-        dayStarted = false; // timer is paused until Play is pressed
+        dayStarted = false; // paused until Play is pressed
     }
 
 
@@ -86,8 +86,8 @@ public class GameManager : MonoBehaviour
 
     public void StartDay()
     {
-        ResetDay();                 // optional but recommended
-        dayStarted = true;
+        ResetDay();          // resets stats & timer
+        dayStarted = true;   // starts the timer
         SceneManager.LoadScene("KitchenScene");
     }
 
