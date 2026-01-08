@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     // =========================
     // Thyme Plot Persistence
     // =========================
+    [Header("Thyme Plots")]
+    public Transform thymePlotsParent;
+
     public List<ThymePlotData> thymePlotsData = new List<ThymePlotData>();
 
     void Awake()
@@ -107,8 +110,14 @@ public class GameManager : MonoBehaviour
     // Save all thyme plots
     public void SaveThymePlots()
     {
+        if (thymePlotsParent == null)
+        {
+            Debug.LogWarning("ThymePlotsParent not assigned!");
+            return;
+        }
+
         thymePlotsData.Clear();
-        ThymePlot[] plots = Object.FindObjectsByType<ThymePlot>(FindObjectsSortMode.None);
+        ThymePlot[] plots = thymePlotsParent.GetComponentsInChildren<ThymePlot>();
         foreach (var plot in plots)
         {
             thymePlotsData.Add(plot.GetData());
@@ -117,7 +126,13 @@ public class GameManager : MonoBehaviour
 
     public void LoadThymePlots()
     {
-        ThymePlot[] plots = Object.FindObjectsByType<ThymePlot>(FindObjectsSortMode.None);
+        if (thymePlotsParent == null)
+        {
+            Debug.LogWarning("ThymePlotsParent not assigned!");
+            return;
+        }
+
+        ThymePlot[] plots = thymePlotsParent.GetComponentsInChildren<ThymePlot>();
 
         if (plots.Length != thymePlotsData.Count)
         {
@@ -144,12 +159,25 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Only reload thyme plots if we are in the Garden scene
         if (scene.name == "FarmScene")
         {
+            // Automatically find the parent in the scene
+            if (thymePlotsParent == null)
+            {
+                thymePlotsParent = GameObject.Find("ThymePlotsParent")?.transform;
+                if (thymePlotsParent == null)
+                {
+                    Debug.LogError("Could not find ThymePlotsParent in the scene!");
+                    return;
+                }
+            }
+
+            // Now load saved plots
             LoadThymePlots();
         }
     }
+
+
 
 
 }

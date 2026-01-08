@@ -3837,6 +3837,8 @@ MonoBehaviour:
     requiredSteps: 
   completedSteps: 
   hasActiveOrder: 0
+  thymePlotsParent: {fileID: 0}
+  thymePlotsData: []
 --- !u!4 &1635584852
 Transform:
   m_ObjectHideFlags: 0
