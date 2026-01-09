@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,17 +31,17 @@ public class SlotScript : MonoBehaviour, IDropHandler
         DraggableItem item = dropped.GetComponent<DraggableItem>();
         if (item == null) return;
 
-        // ❌ Block invalid steps OR insufficient thyme
+        // Block invalid steps OR insufficient thyme
         if (!kitchenManager.CanDoStep(stepForThisSlot))
         {
-            Debug.Log("Cannot do this step right now.");
             return;
         }
 
-        // ✅ Perform step
+
+        // Perform step
         kitchenManager.DoStep(stepForThisSlot);
 
-        // ✅ Snap item into slot
+        // Snap item into slot
         item.parentAfterDrag = transform;
     }
 }

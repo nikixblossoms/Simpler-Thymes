@@ -138,16 +138,18 @@ public class KitchenManager : MonoBehaviour
         if (!IsCurrentStep(step))
             return false;
 
-        // Thyme check for chopping steps
+        // If this is a chop step, check thyme
         if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
         {
             if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+            {
+                ShowWarning("You do not have enough thyme!");
                 return false;
+            }
         }
 
         return true;
     }
-
 
 
     // =========================
@@ -243,7 +245,7 @@ public class KitchenManager : MonoBehaviour
             "\nThyme Needed: " + currentRecipe.thymeRequired;
     }
 
-    void ShowWarning(string message)
+    public void ShowWarning(string message)
     {
         if (warningText == null) return;
 
