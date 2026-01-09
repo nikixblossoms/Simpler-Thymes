@@ -132,6 +132,24 @@ public class KitchenManager : MonoBehaviour
         UpdateStepButtons();
     }
 
+    public bool CanDoStep(RecipeStep step)
+    {
+        // Must be the correct current step
+        if (!IsCurrentStep(step))
+            return false;
+
+        // Thyme check for chopping steps
+        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
+        {
+            if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+                return false;
+        }
+
+        return true;
+    }
+
+
+
     // =========================
     // GIVE CUSTOMER
     // =========================
@@ -196,7 +214,7 @@ public class KitchenManager : MonoBehaviour
         return -1;
     }
 
-    bool IsCurrentStep(RecipeStep step)
+    public bool IsCurrentStep(RecipeStep step)
     {
         int index = GetCurrentStepIndex();
         if (index == -1) return false;
@@ -239,6 +257,8 @@ public class KitchenManager : MonoBehaviour
         if (warningText != null)
             warningText.text = "";
     }
+
+
 
     // =========================
     // BUTTON VISUALS
