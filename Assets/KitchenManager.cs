@@ -59,6 +59,21 @@ public class KitchenManager : MonoBehaviour
     private RecipeData currentRecipe;
     private bool[] completedSteps;
 
+    [System.Serializable]
+    public class StepSpawnData
+    {
+        public RecipeStep step;
+        public GameObject prefab;
+        public Transform spawnParent;
+    }
+
+    [Header("Step Spawning")]
+    public StepSpawnData[] stepSpawnList;
+
+    private GameObject currentSpawnedItem;
+
+
+
     // =========================
     // UNITY
     // =========================
@@ -84,7 +99,9 @@ public class KitchenManager : MonoBehaviour
 
         UpdateOrderUI();
         UpdateStepButtons();
+        SpawnItemForCurrentStep(); 
     }
+
 
     void LoadExistingOrder()
     {
@@ -93,6 +110,7 @@ public class KitchenManager : MonoBehaviour
 
         UpdateOrderUI();
         UpdateStepButtons();
+        SpawnItemForCurrentStep();
     }
 
     // =========================
@@ -128,26 +146,26 @@ public class KitchenManager : MonoBehaviour
 
         UpdateOrderUI();
         UpdateStepButtons();
+        SpawnItemForCurrentStep();
     }
 
-    public bool CanDoStep(RecipeStep step)
+    public bool CanDoStep(KitchenManager.RecipeStep step)
     {
-        // Must be the correct current step
-        if (!IsCurrentStep(step))
-            return false;
-
-        // If this is a chop step, check thyme
-        if (step == RecipeStep.Chop)
+        // Allow if step exists and not completed yet
+        for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
         {
-            if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+            if (!completedSteps[i] && currentRecipe.requiredSteps[i] == step)
             {
-                ShowWarning("You do not have enough thyme!");
-                return false;
+                Debug.Log($"[DEBUG] Step '{step}' is allowed (incomplete at index {i})");
+                return true;
             }
         }
 
-        return true;
+        Debug.Log($"[DEBUG] Step '{step}' is NOT allowed, all matching steps complete or not in recipe");
+        return false;
     }
+
+
 
 
     // =========================
@@ -257,6 +275,49 @@ public class KitchenManager : MonoBehaviour
         if (warningText != null)
             warningText.text = "";
     }
+
+    void SpawnItemForCurrentStep()
+    {
+        int index = GetCurrentStepIndex();
+        if (index == -1) return;
+
+        RecipeStep currentStep = currentRecipe.requiredSteps[index];
+
+        // Destroy previous source item
+        if (currentSpawnedItem != null)
+            Destroy(currentSpawnedItem);
+
+        // Find matching spawn config
+        foreach (var data in stepSpawnList)
+        {
+            if (data.step == currentStep && data.prefab != null)
+            {
+                // Spawn the source item
+                currentSpawnedItem = Instantiate(data.prefab, data.spawnParent);
+
+                // =========================
+                // SET UP AS SOURCE ITEM
+                // =========================
+                DraggableItem drag = currentSpawnedItem.GetComponent<DraggableItem>();
+                if (drag != null)
+                {
+                    drag.isSourceItem = true;
+                    drag.sourcePrefab = data.prefab;
+                    drag.sourceParent = data.spawnParent;
+                }
+
+                // Optional: assign step to slot if prefab has SlotScript
+                SlotScript slot = currentSpawnedItem.GetComponent<SlotScript>();
+                if (slot != null)
+                    slot.stepForThisSlot = currentStep;
+
+                return;
+            }
+        }
+
+        Debug.LogWarning($"No spawn data found for step: {currentStep}");
+    }
+
 
 
 

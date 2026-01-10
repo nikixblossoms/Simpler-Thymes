@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6380823305321895938}
   - component: {fileID: 8725135522361606330}
   m_Layer: 5
-  m_Name: Bowl
+  m_Name: Pot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 031de3edd8e01d04bbeed0179c834003, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5f8c5a61c4c5fa443ae2e0485ac658c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -92,6 +92,3 @@ MonoBehaviour:
   parentAfterDrag: {fileID: 0}
   itemID: Bowl
   currentSlotID: 
-  isSourceItem: 0
-  sourcePrefab: {fileID: 0}
-  sourceParent: {fileID: 0}

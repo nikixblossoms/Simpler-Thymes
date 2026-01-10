@@ -17,6 +17,12 @@ public class DraggableItem : MonoBehaviour,
     public string itemID;           // Unique item identifier
     public string currentSlotID = ""; // Slot ID this item currently occupies (empty = not in slot)
 
+    [Header("Spawner")]
+    public bool isSourceItem = false;
+    public GameObject sourcePrefab;
+    public Transform sourceParent;
+
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();

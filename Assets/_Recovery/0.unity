@@ -487,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
@@ -1136,7 +1136,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: isGiveCustomerSlot
@@ -1151,139 +1151,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
---- !u!1 &175199986
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 175199990}
-  - component: {fileID: 175199989}
-  - component: {fileID: 175199988}
-  - component: {fileID: 175199987}
-  m_Layer: 5
-  m_Name: ChoppingButton
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &175199987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175199986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 175199988}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 952965915}
-        m_TargetAssemblyTypeName: KitchenManager, Assembly-CSharp
-        m_MethodName: ChoppingStep
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &175199988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175199986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &175199989
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175199986}
-  m_CullTransparentMesh: 1
---- !u!224 &175199990
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175199986}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1440275272}
-  m_Father: {fileID: 539885841}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 406.68}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &206156415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,7 +1355,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: isGiveCustomerSlot
@@ -2365,7 +2232,6 @@ RectTransform:
   - {fileID: 1962015644}
   - {fileID: 1011430302}
   - {fileID: 53062743}
-  - {fileID: 175199990}
   - {fileID: 546103756}
   - {fileID: 662622618}
   m_Father: {fileID: 844245561}
@@ -2834,7 +2700,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
@@ -3604,7 +3470,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: isGiveCustomerSlot
@@ -3667,10 +3533,10 @@ MonoBehaviour:
   recipes:
   - recipeName: Thyme Tea
     thymeRequired: 2
-    requiredSteps: 0100000002000000000000000300000004000000
+    requiredSteps: 020000000300000000000000010000000400000005000000
   - recipeName: Herbed Bread
     thymeRequired: 4
-    requiredSteps: 0500000006000000000000000700000008000000090000000a000000
+    requiredSteps: 0600000007000000000000000100000008000000090000000a0000000b000000
   orderText: {fileID: 2141886946}
   warningText: {fileID: 392094944}
   chopButton: {fileID: 53062744}
@@ -3686,22 +3552,25 @@ MonoBehaviour:
   bakeButton: {fileID: 38935845}
   giveCustomerButton: {fileID: 966997798}
   stepSpawnList:
-  - step: 1
+  - step: 2
     prefab: {fileID: 9150875547780903312, guid: 478c73b6f1879f446b953e72ef031082, type: 3}
     spawnParent: {fileID: 221817753}
-  - step: 2
+  - step: 3
     prefab: {fileID: 9150875547780903312, guid: 478c73b6f1879f446b953e72ef031082, type: 3}
     spawnParent: {fileID: 1510849059}
   - step: 0
     prefab: {fileID: 9150875547780903312, guid: 9caa3443ecf44534f8f406a1edf46de8, type: 3}
     spawnParent: {fileID: 1892457156}
-  - step: 3
+  - step: 1
     prefab: {fileID: 9150875547780903312, guid: 94da282b7812524428fc7f620072ea4e, type: 3}
     spawnParent: {fileID: 660917427}
   - step: 4
     prefab: {fileID: 9150875547780903312, guid: c51b6a99f9cd4474a8ea3e4dc8288fff, type: 3}
     spawnParent: {fileID: 2037074522}
   - step: 5
+    prefab: {fileID: 9150875547780903312, guid: 491d955287fc6fd44a318f248c390d4e, type: 3}
+    spawnParent: {fileID: 541650841}
+  - step: 6
     prefab: {fileID: 9150875547780903312, guid: 8f86ab265ec19344e8d784c36cb67851, type: 3}
     spawnParent: {fileID: 1024793456}
 --- !u!4 &952965916
@@ -4221,7 +4090,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
@@ -4646,144 +4515,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356990385}
   m_CullTransparentMesh: 1
---- !u!1 &1440275271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1440275272}
-  - component: {fileID: 1440275274}
-  - component: {fileID: 1440275273}
-  m_Layer: 5
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1440275272
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440275271}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 175199990}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1440275273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440275271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'Chopping
-
-'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 22.4
-  m_fontSizeBase: 22.4
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1440275274
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440275271}
-  m_CullTransparentMesh: 1
 --- !u!1001 &1462829146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4882,7 +4613,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
@@ -6351,7 +6082,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
