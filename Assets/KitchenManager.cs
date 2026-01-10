@@ -14,7 +14,6 @@ public class KitchenManager : MonoBehaviour
         PourWaterInPot,
         PlaceThymeInCup,
         PourWaterInCup,
-        Chop2,
         GrabDough,
         PlaceDoughInBowl,
         PlaceThymeInBowl,
@@ -46,7 +45,6 @@ public class KitchenManager : MonoBehaviour
     public Button pourWaterInPotButton;
     public Button placeThymeInCupButton;
     public Button pourWaterInCupButton;
-    public Button chop2Button;
     public Button grabDoughButton;
     public Button placeDoughInBowlButton;
     public Button placeThymeInBowlButton;
@@ -107,7 +105,7 @@ public class KitchenManager : MonoBehaviour
             return;
 
         // Thyme check
-        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
+        if (step == RecipeStep.Chop)
         {
             if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
             {
@@ -139,7 +137,7 @@ public class KitchenManager : MonoBehaviour
             return false;
 
         // If this is a chop step, check thyme
-        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
+        if (step == RecipeStep.Chop)
         {
             if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
             {
@@ -286,7 +284,6 @@ public class KitchenManager : MonoBehaviour
         SetButtonState(pourWaterInPotButton, IsCurrentStep(RecipeStep.PourWaterInPot));
         SetButtonState(placeThymeInCupButton, IsCurrentStep(RecipeStep.PlaceThymeInCup));
         SetButtonState(pourWaterInCupButton, IsCurrentStep(RecipeStep.PourWaterInCup));
-        SetButtonState(chop2Button, IsCurrentStep(RecipeStep.Chop2));
         SetButtonState(grabDoughButton, IsCurrentStep(RecipeStep.GrabDough));
         SetButtonState(placeDoughInBowlButton, IsCurrentStep(RecipeStep.PlaceDoughInBowl));
         SetButtonState(placeThymeInBowlButton, IsCurrentStep(RecipeStep.PlaceThymeInBowl));
@@ -306,7 +303,6 @@ public class KitchenManager : MonoBehaviour
     public void PourWaterInPotStep() => DoStep(RecipeStep.PourWaterInPot);
     public void PlaceThymeInCupStep() => DoStep(RecipeStep.PlaceThymeInCup);
     public void PourWaterInCupStep() => DoStep(RecipeStep.PourWaterInCup);
-    public void Chop2Step() => DoStep(RecipeStep.Chop2);
     public void GrabDoughStep() => DoStep(RecipeStep.GrabDough);
     public void PlaceDoughInBowlStep() => DoStep(RecipeStep.PlaceDoughInBowl);
     public void PlaceThymeInBowlStep() => DoStep(RecipeStep.PlaceThymeInBowl);

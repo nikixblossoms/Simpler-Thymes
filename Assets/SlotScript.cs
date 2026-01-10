@@ -1,27 +1,27 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SlotScript : MonoBehaviour, IDropHandler
 {
+    [Header("Slot Settings")]
+    public bool isGiveCustomerSlot;
     public KitchenManager.RecipeStep stepForThisSlot;
+
+    [Header("References")]
     public KitchenManager kitchenManager;
 
     void Awake()
     {
-        // Auto-find if not assigned
         if (kitchenManager == null)
             kitchenManager = FindObjectOfType<KitchenManager>();
     }
 
+    /// <summary>
+    /// When something is dropped onto this slot
+    /// </summary>
     public void OnDrop(PointerEventData eventData)
     {
-        if (kitchenManager == null)
-        {
-            Debug.LogError("KitchenManager not found!");
-            return;
-        }
-
+        // Slot already has an item → ignore drop
         if (transform.childCount > 0)
             return;
 
@@ -31,17 +31,23 @@ public class SlotScript : MonoBehaviour, IDropHandler
         DraggableItem item = dropped.GetComponent<DraggableItem>();
         if (item == null) return;
 
-        // Block invalid steps OR insufficient thyme
-        if (!kitchenManager.CanDoStep(stepForThisSlot))
+        // Handle Give Customer slot
+        if (isGiveCustomerSlot)
         {
-            return;
+            kitchenManager.GiveToCustomer();
+        }
+        else
+        {
+            // Normal step slot
+            if (!kitchenManager.CanDoStep(stepForThisSlot))
+                return;
+
+            kitchenManager.DoStep(stepForThisSlot);
         }
 
-
-        // Perform step
-        kitchenManager.DoStep(stepForThisSlot);
-
-        // Snap item into slot
+        // Move the item into this slot
         item.parentAfterDrag = transform;
+        item.transform.SetParent(transform);
+        item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 }

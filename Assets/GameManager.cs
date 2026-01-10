@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class ThymePlotData
@@ -62,6 +63,10 @@ public class GameManager : MonoBehaviour
             return;
         }
     }
+
+    [Header("Item slots data")]
+    public Dictionary<string, string> slotItemMap = new Dictionary<string, string>();
+
 
     void Start()
     {
@@ -195,6 +200,18 @@ public class GameManager : MonoBehaviour
             LoadThymePlots();
         }
     }
+
+
+    public bool IsItemInAnySlot(string itemID)
+    {
+        foreach (var kvp in slotItemMap)
+        {
+            if (kvp.Value == itemID)
+                return true;
+        }
+        return false;
+    }
+
 
 
 
