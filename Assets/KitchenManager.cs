@@ -10,6 +10,7 @@ public class KitchenManager : MonoBehaviour
     public enum RecipeStep
     {
         Chop,
+        Chop2, 
         GrabPot,
         PourWaterInPot,
         PlaceThymeInCup,
@@ -17,7 +18,7 @@ public class KitchenManager : MonoBehaviour
         GrabDough,
         PlaceDoughInBowl,
         PlaceThymeInBowl,
-        Knead,
+        RollDough,
         FormDough,
         Bake
     }
@@ -41,6 +42,7 @@ public class KitchenManager : MonoBehaviour
     public TMP_Text warningText;
 
     public Button chopButton;
+    public Button chop2Button;
     public Button grabPotButton;
     public Button pourWaterInPotButton;
     public Button placeThymeInCupButton;
@@ -48,7 +50,7 @@ public class KitchenManager : MonoBehaviour
     public Button grabDoughButton;
     public Button placeDoughInBowlButton;
     public Button placeThymeInBowlButton;
-    public Button kneadButton;
+    public Button rollDoughButton;
     public Button formDoughButton;
     public Button bakeButton;
     public Button giveCustomerButton;
@@ -123,7 +125,7 @@ public class KitchenManager : MonoBehaviour
             return;
 
         // Thyme check
-        if (step == RecipeStep.Chop)
+        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
         {
             if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
             {
@@ -341,6 +343,7 @@ public class KitchenManager : MonoBehaviour
     void UpdateStepButtons()
     {
         SetButtonState(chopButton, IsCurrentStep(RecipeStep.Chop));
+        SetButtonState(chop2Button, IsCurrentStep(RecipeStep.Chop2));
         SetButtonState(grabPotButton, IsCurrentStep(RecipeStep.GrabPot));
         SetButtonState(pourWaterInPotButton, IsCurrentStep(RecipeStep.PourWaterInPot));
         SetButtonState(placeThymeInCupButton, IsCurrentStep(RecipeStep.PlaceThymeInCup));
@@ -348,7 +351,7 @@ public class KitchenManager : MonoBehaviour
         SetButtonState(grabDoughButton, IsCurrentStep(RecipeStep.GrabDough));
         SetButtonState(placeDoughInBowlButton, IsCurrentStep(RecipeStep.PlaceDoughInBowl));
         SetButtonState(placeThymeInBowlButton, IsCurrentStep(RecipeStep.PlaceThymeInBowl));
-        SetButtonState(kneadButton, IsCurrentStep(RecipeStep.Knead));
+        SetButtonState(rollDoughButton, IsCurrentStep(RecipeStep.RollDough));
         SetButtonState(formDoughButton, IsCurrentStep(RecipeStep.FormDough));
         SetButtonState(bakeButton, IsCurrentStep(RecipeStep.Bake));
 
@@ -360,6 +363,7 @@ public class KitchenManager : MonoBehaviour
     // BUTTON WRAPPERS
     // =========================
     public void ChopStep() => DoStep(RecipeStep.Chop);
+    public void Chop2Step() => DoStep(RecipeStep.Chop2); 
     public void GrabPotStep() => DoStep(RecipeStep.GrabPot);
     public void PourWaterInPotStep() => DoStep(RecipeStep.PourWaterInPot);
     public void PlaceThymeInCupStep() => DoStep(RecipeStep.PlaceThymeInCup);
@@ -367,7 +371,7 @@ public class KitchenManager : MonoBehaviour
     public void GrabDoughStep() => DoStep(RecipeStep.GrabDough);
     public void PlaceDoughInBowlStep() => DoStep(RecipeStep.PlaceDoughInBowl);
     public void PlaceThymeInBowlStep() => DoStep(RecipeStep.PlaceThymeInBowl);
-    public void KneadStep() => DoStep(RecipeStep.Knead);
+    public void RollDoughStep() => DoStep(RecipeStep.RollDough);
     public void FormDoughStep() => DoStep(RecipeStep.FormDough);
     public void BakeStep() => DoStep(RecipeStep.Bake);
     public void GiveCustomerButton() => GiveToCustomer();
