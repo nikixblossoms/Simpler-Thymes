@@ -20,7 +20,8 @@ public class KitchenManager : MonoBehaviour
         PlaceThymeInBowl,
         RollDough,
         FormDough,
-        Bake
+        Bake,
+        BakedGood,
     }
 
     // =========================
@@ -53,6 +54,7 @@ public class KitchenManager : MonoBehaviour
     public Button rollDoughButton;
     public Button formDoughButton;
     public Button bakeButton;
+    public Button bakedGoodButton;
     public Button giveCustomerButton;
 
     // =========================
@@ -354,6 +356,7 @@ public class KitchenManager : MonoBehaviour
         SetButtonState(rollDoughButton, IsCurrentStep(RecipeStep.RollDough));
         SetButtonState(formDoughButton, IsCurrentStep(RecipeStep.FormDough));
         SetButtonState(bakeButton, IsCurrentStep(RecipeStep.Bake));
+        SetButtonState(bakedGoodButton, IsCurrentStep(RecipeStep.BakedGood));
 
         // Always visible
         SetButtonState(giveCustomerButton, true);
@@ -374,5 +377,6 @@ public class KitchenManager : MonoBehaviour
     public void RollDoughStep() => DoStep(RecipeStep.RollDough);
     public void FormDoughStep() => DoStep(RecipeStep.FormDough);
     public void BakeStep() => DoStep(RecipeStep.Bake);
+    public void BakedGood() => DoStep(RecipeStep.BakedGood);
     public void GiveCustomerButton() => GiveToCustomer();
 }
