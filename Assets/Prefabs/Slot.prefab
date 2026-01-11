@@ -115,5 +115,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   isGiveCustomerSlot: 0
   stepForThisSlot: 1
-  slotID: Bowl
   kitchenManager: {fileID: 0}
