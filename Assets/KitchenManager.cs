@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
+
 
 public class KitchenManager : MonoBehaviour
 {
@@ -258,11 +260,9 @@ public class KitchenManager : MonoBehaviour
         }
 
         orderText.text =
-            "Customer wants:\n" +
-            currentRecipe.recipeName +
             "\n\nSteps:\n" +
             stepsText +
-            "\nThyme Needed: " + currentRecipe.thymeRequired;
+            "\nNeed: " + string.Concat(Enumerable.Repeat("𖧧 ", currentRecipe.thymeRequired));
     }
 
     public void ShowWarning(string message)
