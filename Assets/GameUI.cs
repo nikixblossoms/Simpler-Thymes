@@ -11,15 +11,15 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance == null) return;
 
-        thymeText.text = "Thyme: " + GameManager.Instance.thymeCount;
+        thymeText.text = "" + GameManager.Instance.thymeCount;
 
         customerText.text =
-            "Customers: " +
+            "" +
             GameManager.Instance.customersServed + "/" +
             GameManager.Instance.customerGoal;
 
         timeText.text =
-            "Time: " +
+            "" +
             Mathf.Ceil(GameManager.Instance.GetTimeRemaining());
     }
 }

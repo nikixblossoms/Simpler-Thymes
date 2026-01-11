@@ -2,6 +2,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq;
+using System.Text.RegularExpressions;
+
+
+
 
 
 public class KitchenManager : MonoBehaviour
@@ -80,6 +84,10 @@ public class KitchenManager : MonoBehaviour
 
 
 
+    string SplitByCaps(string input)
+    {
+        return Regex.Replace(input, "(?<!^)([A-Z])", " $1");
+    }
     // =========================
     // UNITY
     // =========================
@@ -256,11 +264,14 @@ public class KitchenManager : MonoBehaviour
         for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
         {
             string box = completedSteps[i] ? "[x] " : "[ ] ";
-            stepsText += box + currentRecipe.requiredSteps[i] + "\n";
+            stepsText += box + SplitByCaps(currentRecipe.requiredSteps[i].ToString()) + "\n";
+
         }
 
+        
+
         orderText.text =
-            "\n\nSteps:\n" +
+            "" +
             stepsText +
             "\nNeed: " + string.Concat(Enumerable.Repeat("𖧧 ", currentRecipe.thymeRequired));
     }
