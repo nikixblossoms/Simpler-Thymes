@@ -3,9 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 using System.Text.RegularExpressions;
-
-
-
+using System.Collections;
 
 
 public class KitchenManager : MonoBehaviour
@@ -15,19 +13,19 @@ public class KitchenManager : MonoBehaviour
     // =========================
     public enum RecipeStep
     {
-        Chop,
-        Chop2, 
+        Chop1,
+        ChopThyme, 
         GrabPot,
         PourWaterInPot,
         PlaceThymeInCup,
         PourWaterInCup,
         GrabDough,
-        PlaceDoughInBowl,
+        PlaceDoughinBowl,
         PlaceThymeInBowl,
         RollDough,
         FormDough,
         Bake,
-        BakedGood,
+        LetBreadRest,
     }
 
     // =========================
@@ -47,6 +45,8 @@ public class KitchenManager : MonoBehaviour
     public RecipeData[] recipes;
     public TMP_Text orderText;
     public TMP_Text warningText;
+    public Image warningIcon;
+
 
     public Button chopButton;
     public Button chop2Button;
@@ -62,6 +62,13 @@ public class KitchenManager : MonoBehaviour
     public Button bakeButton;
     public Button bakedGoodButton;
     public Button giveCustomerButton;
+
+    [Header("Customer Speech Bubbles")]
+    public GameObject happyBubble;      // shows when order is correct
+    public GameObject angryBubble;      // shows when order is wrong
+    public GameObject recipeBubble;     // shows customer's requested recipe
+    public float bubbleDelay = 0.5f;   // delay before showing speech bubbles
+
 
     // =========================
     // STATE
@@ -102,8 +109,16 @@ public class KitchenManager : MonoBehaviour
     // =========================
     // ORDER SETUP
     // =========================
+
+    
     void SpawnCustomer()
     {
+        // Hide all customer bubbles & recipe bubble immediately
+        if (happyBubble != null) happyBubble.SetActive(false);
+        if (angryBubble != null) angryBubble.SetActive(false);
+        if (recipeBubble != null) recipeBubble.SetActive(false);
+
+        // Pick a random recipe
         currentRecipe = recipes[Random.Range(0, recipes.Length)];
         completedSteps = new bool[currentRecipe.requiredSteps.Length];
 
@@ -114,7 +129,12 @@ public class KitchenManager : MonoBehaviour
         UpdateOrderUI();
         UpdateStepButtons();
         SpawnItemForCurrentStep(); 
+
+        // Show recipe bubble (just the prefab) with a slight delay
+        ShowRecipeBubble();
     }
+
+
 
 
     void LoadExistingOrder()
@@ -137,15 +157,21 @@ public class KitchenManager : MonoBehaviour
             return;
 
         // Thyme check
-        if (step == RecipeStep.Chop || step == RecipeStep.Chop2)
+        if (step == RecipeStep.Chop1 || step == RecipeStep.ChopThyme)
         {
-            if (GameManager.Instance.thymeCount < currentRecipe.thymeRequired)
+            int required = currentRecipe.thymeRequired;
+            int current = GameManager.Instance.thymeCount;
+
+            if (current < required)
             {
-                ShowWarning("You do not have enough thyme!");
+                int missing = required - current;
+                ShowWarning($"You do not have enough thyme! You need {missing} more");
                 return;
             }
-            GameManager.Instance.thymeCount -= currentRecipe.thymeRequired;
+
+            GameManager.Instance.thymeCount -= required;
         }
+
 
         // Mark step complete (loop-based, as requested)
         for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
@@ -189,7 +215,8 @@ public class KitchenManager : MonoBehaviour
     {
         if (!CheckRecipeComplete())
         {
-            FailOrder("Customer is angry! Order incomplete.");
+            
+            FailOrder();
             return;
         }
 
@@ -210,21 +237,87 @@ public class KitchenManager : MonoBehaviour
     // =========================
     // FINISH / FAIL
     // =========================
-    void FinishRecipe()
+
+    // Just show the recipe bubble GameObject after a delay
+    void ShowRecipeBubble()
     {
+        if (recipeBubble != null)
+            recipeBubble.SetActive(false); // hide first
+
+        StartCoroutine(ShowRecipeWithDelay());
+    }
+
+    IEnumerator ShowRecipeWithDelay()
+    {
+        yield return new WaitForSeconds(bubbleDelay);
+
+        if (recipeBubble != null)
+            recipeBubble.SetActive(true);
+    }
+
+
+
+
+   void FinishRecipe()
+    {
+        // Destroy the last spawned item before showing bubble
+        if (currentSpawnedItem != null)
+        {
+            Destroy(currentSpawnedItem);
+            currentSpawnedItem = null;
+        }
+
         GameManager.Instance.customersServed++;
-
-        Debug.Log("Order completed!");
-        ClearOrder();
-        SpawnCustomer();
+        StartCoroutine(ShowBubbleAndNextCustomer(true)); // happy bubble
     }
 
-    void FailOrder(string reason)
+    void FailOrder()
     {
-        Debug.Log(reason);
+        // Destroy the last spawned item before showing bubble
+        if (currentSpawnedItem != null)
+        {
+            Destroy(currentSpawnedItem);
+            currentSpawnedItem = null;
+        }
+
+        StartCoroutine(ShowBubbleAndNextCustomer(false)); // angry bubble
+    }
+
+
+    [SerializeField] private float bubbleDisplayTime = 2f; // how long happy/angry bubble stays
+
+    IEnumerator ShowBubbleAndNextCustomer(bool happy)
+    {
+        // Hide both bubbles first
+        if (happyBubble != null) happyBubble.SetActive(false);
+        if (angryBubble != null) angryBubble.SetActive(false);
+
+        // Show the correct bubble
+        if (happy && happyBubble != null)
+            happyBubble.SetActive(true);
+        else if (!happy && angryBubble != null)
+            angryBubble.SetActive(true);
+
+        // Wait for a few seconds
+        yield return new WaitForSeconds(bubbleDisplayTime);
+
+        // Hide bubble
+        if (happy && happyBubble != null)
+            happyBubble.SetActive(false);
+        else if (!happy && angryBubble != null)
+            angryBubble.SetActive(false);
+
+        // Clear current order
         ClearOrder();
+
+        // Spawn next customer
         SpawnCustomer();
     }
+
+
+
+
+
 
     void ClearOrder()
     {
@@ -272,8 +365,7 @@ public class KitchenManager : MonoBehaviour
 
         orderText.text =
             "" +
-            stepsText +
-            "\nNeed: " + string.Concat(Enumerable.Repeat("𖧧 ", currentRecipe.thymeRequired));
+            stepsText;
     }
 
     public void ShowWarning(string message)
@@ -281,6 +373,10 @@ public class KitchenManager : MonoBehaviour
         if (warningText == null) return;
 
         warningText.text = message;
+
+        if (warningIcon != null)
+            warningIcon.gameObject.SetActive(true);
+
         CancelInvoke(nameof(ClearWarning));
         Invoke(nameof(ClearWarning), 2f);
     }
@@ -289,7 +385,33 @@ public class KitchenManager : MonoBehaviour
     {
         if (warningText != null)
             warningText.text = "";
+
+        if (warningIcon != null)
+            warningIcon.gameObject.SetActive(false);
     }
+
+
+    void ShowCustomerBubble(bool happy)
+    {
+        // Hide both first
+        if (happyBubble != null) happyBubble.SetActive(false);
+        if (angryBubble != null) angryBubble.SetActive(false);
+
+        // Show the correct bubble after a short delay
+        StartCoroutine(ShowBubbleWithDelay(happy));
+    }
+
+    IEnumerator ShowBubbleWithDelay(bool happy)
+    {
+        yield return new WaitForSeconds(bubbleDelay);
+
+        if (happy && happyBubble != null)
+            happyBubble.SetActive(true);
+        else if (!happy && angryBubble != null)
+            angryBubble.SetActive(true);
+    }
+
+
 
     void SpawnItemForCurrentStep()
     {
@@ -355,19 +477,19 @@ public class KitchenManager : MonoBehaviour
 
     void UpdateStepButtons()
     {
-        SetButtonState(chopButton, IsCurrentStep(RecipeStep.Chop));
-        SetButtonState(chop2Button, IsCurrentStep(RecipeStep.Chop2));
+        SetButtonState(chopButton, IsCurrentStep(RecipeStep.Chop1));
+        SetButtonState(chop2Button, IsCurrentStep(RecipeStep.ChopThyme));
         SetButtonState(grabPotButton, IsCurrentStep(RecipeStep.GrabPot));
         SetButtonState(pourWaterInPotButton, IsCurrentStep(RecipeStep.PourWaterInPot));
         SetButtonState(placeThymeInCupButton, IsCurrentStep(RecipeStep.PlaceThymeInCup));
         SetButtonState(pourWaterInCupButton, IsCurrentStep(RecipeStep.PourWaterInCup));
         SetButtonState(grabDoughButton, IsCurrentStep(RecipeStep.GrabDough));
-        SetButtonState(placeDoughInBowlButton, IsCurrentStep(RecipeStep.PlaceDoughInBowl));
+        SetButtonState(placeDoughInBowlButton, IsCurrentStep(RecipeStep.PlaceDoughinBowl));
         SetButtonState(placeThymeInBowlButton, IsCurrentStep(RecipeStep.PlaceThymeInBowl));
         SetButtonState(rollDoughButton, IsCurrentStep(RecipeStep.RollDough));
         SetButtonState(formDoughButton, IsCurrentStep(RecipeStep.FormDough));
         SetButtonState(bakeButton, IsCurrentStep(RecipeStep.Bake));
-        SetButtonState(bakedGoodButton, IsCurrentStep(RecipeStep.BakedGood));
+        SetButtonState(bakedGoodButton, IsCurrentStep(RecipeStep.LetBreadRest));
 
         // Always visible
         SetButtonState(giveCustomerButton, true);
@@ -376,18 +498,18 @@ public class KitchenManager : MonoBehaviour
     // =========================
     // BUTTON WRAPPERS
     // =========================
-    public void ChopStep() => DoStep(RecipeStep.Chop);
-    public void Chop2Step() => DoStep(RecipeStep.Chop2); 
+    public void Chop1Step() => DoStep(RecipeStep.Chop1);
+    public void ChopThymeStep() => DoStep(RecipeStep.ChopThyme); 
     public void GrabPotStep() => DoStep(RecipeStep.GrabPot);
     public void PourWaterInPotStep() => DoStep(RecipeStep.PourWaterInPot);
     public void PlaceThymeInCupStep() => DoStep(RecipeStep.PlaceThymeInCup);
     public void PourWaterInCupStep() => DoStep(RecipeStep.PourWaterInCup);
     public void GrabDoughStep() => DoStep(RecipeStep.GrabDough);
-    public void PlaceDoughInBowlStep() => DoStep(RecipeStep.PlaceDoughInBowl);
+    public void PlaceDoughInBowlStep() => DoStep(RecipeStep.PlaceDoughinBowl);
     public void PlaceThymeInBowlStep() => DoStep(RecipeStep.PlaceThymeInBowl);
     public void RollDoughStep() => DoStep(RecipeStep.RollDough);
     public void FormDoughStep() => DoStep(RecipeStep.FormDough);
     public void BakeStep() => DoStep(RecipeStep.Bake);
-    public void BakedGood() => DoStep(RecipeStep.BakedGood);
+    public void BakedGood() => DoStep(RecipeStep.LetBreadRest);
     public void GiveCustomerButton() => GiveToCustomer();
 }
