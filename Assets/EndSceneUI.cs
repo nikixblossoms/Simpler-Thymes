@@ -25,6 +25,6 @@ public class EndSceneUI : MonoBehaviour
 
         float timeSpent = gm.dayLength - gm.GetTimeRemaining();
         timeText.text =
-            "In the time span of " + Mathf.RoundToInt(timeSpent) + " seconds";
+            "In the time span of " + Mathf.RoundToInt(timeSpent) + " seconds!";
     }
 }
