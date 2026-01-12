@@ -100,10 +100,19 @@ public class KitchenManager : MonoBehaviour
     // =========================
     void Start()
     {
-        if (!GameManager.Instance.hasActiveOrder)
-            SpawnCustomer();
+        ResetBubbles();
+
+        if (GameManager.Instance != null && GameManager.Instance.hasActiveOrder)
+            RestoreOrderAndBubble();
         else
-            LoadExistingOrder();
+            SpawnCustomer();
+    }
+
+    void ResetBubbles()
+    {
+        if (happyBubble) happyBubble.SetActive(false);
+        if (angryBubble) angryBubble.SetActive(false);
+        if (recipeBubble) recipeBubble.SetActive(false);
     }
 
     // =========================
@@ -246,6 +255,29 @@ public class KitchenManager : MonoBehaviour
 
         StartCoroutine(ShowRecipeWithDelay());
     }
+
+    void RestoreOrderAndBubble()
+    {
+        currentRecipe = GameManager.Instance.currentRecipe;
+        completedSteps = GameManager.Instance.completedSteps;
+
+        UpdateOrderUI();
+        UpdateStepButtons();
+        SpawnItemForCurrentStep();
+
+        // 🔑 Force the speech bubble to show again
+        StartCoroutine(ShowRecipeBubbleDelayed());
+    }
+
+
+    IEnumerator ShowRecipeBubbleDelayed()
+{
+    yield return new WaitForSeconds(bubbleDelay);
+
+    if (recipeBubble != null)
+        recipeBubble.SetActive(true);
+}
+
 
     IEnumerator ShowRecipeWithDelay()
     {

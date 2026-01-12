@@ -1354,7 +1354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 896.9, y: 19.285767}
+  m_AnchoredPosition: {x: 909.4285, y: 19.285767}
   m_SizeDelta: {x: 408.5, y: 323.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &144957611
@@ -3527,7 +3527,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 896.9, y: 19.285767}
+  m_AnchoredPosition: {x: 909.4285, y: 19.285767}
   m_SizeDelta: {x: 408.5, y: 323.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &587522796
@@ -7280,7 +7280,7 @@ MonoBehaviour:
   thymeCount: 0
   thymeCollectedToday: 0
   customersServed: 0
-  customerGoal: 6
+  customerGoal: 1
   dayStarted: 0
   dayLength: 200
   currentRecipe:

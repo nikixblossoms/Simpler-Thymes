@@ -15,8 +15,7 @@ public class UIManager : MonoBehaviour
 
         customerText.text =
             "" +
-            GameManager.Instance.customersServed + "/" +
-            GameManager.Instance.customerGoal;
+            GameManager.Instance.customersServed;
 
         timeText.text =
             "" +

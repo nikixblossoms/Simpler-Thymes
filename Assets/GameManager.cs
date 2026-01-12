@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     public int thymeCount = 0;
     public int thymeCollectedToday = 0;
     public int customersServed = 0;
-    public int customerGoal = 6;
 
     [Header("Day State")]
     public bool dayStarted = false;
@@ -83,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         timeRemaining -= Time.deltaTime;
 
-        if (timeRemaining <= 0 || customersServed >= customerGoal)
+        if (timeRemaining <= 0)
         {
             EndDay();
         }
@@ -98,8 +97,16 @@ public class GameManager : MonoBehaviour
 
     void EndDay()
     {
+        dayStarted = false;
+
+        hasActiveOrder = false;
+        currentRecipe = null;
+        completedSteps = null;
+
         SceneManager.LoadScene("EndScene");
     }
+
+
 
     public float GetTimeRemaining()
     {
@@ -183,23 +190,24 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Ignore EndScene completely
+        if (scene.name == "EndScene")
+            return;
+
         if (scene.name == "FarmScene")
         {
-            // Automatically find the parent in the scene
+            thymePlotsParent = GameObject.Find("ThymePlotsParent")?.transform;
+
             if (thymePlotsParent == null)
             {
-                thymePlotsParent = GameObject.Find("ThymePlotsParent")?.transform;
-                if (thymePlotsParent == null)
-                {
-                    Debug.LogError("Could not find ThymePlotsParent in the scene!");
-                    return;
-                }
+                Debug.LogError("Could not find ThymePlotsParent in the scene!");
+                return;
             }
 
-            // Now load saved plots
             LoadThymePlots();
         }
     }
+
 
 
     public bool IsItemInAnySlot(string itemID)
