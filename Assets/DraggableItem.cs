@@ -14,58 +14,84 @@ public class DraggableItem : MonoBehaviour,
     [HideInInspector] public Transform parentAfterDrag;
 
     [Header("Item Data")]
-    public string itemID;           // Unique item identifier
-    public string currentSlotID = ""; // Slot ID this item currently occupies (empty = not in slot)
+    public string itemID;
+    public string currentSlotID = "";
 
     [Header("Spawner")]
-    public bool isSourceItem = false;
-    public GameObject sourcePrefab;
-    public Transform sourceParent;
+    public bool isSourceItem = false;          // True = infinite source
+    public GameObject sourcePrefab;            // Prefab to clone
+    public Transform sourceParent;              // Where source lives
 
+    // Internal
+    private bool isClone = false;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
+
         if (canvas == null)
             Debug.LogError("[DraggableItem] No Canvas found in parent hierarchy!");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Save original parent in case we need to snap back
+        // ===============================
+        // SOURCE ITEM → SPAWN CLONE
+        // ===============================
+        if (isSourceItem)
+        {
+            GameObject clone = Instantiate(sourcePrefab, sourceParent);
+            DraggableItem cloneItem = clone.GetComponent<DraggableItem>();
+
+            cloneItem.isSourceItem = false;
+            cloneItem.isClone = true;
+            cloneItem.parentAfterDrag = transform.parent;
+
+            // Move clone to canvas so it can be dragged
+            clone.transform.SetParent(canvas.transform);
+            clone.transform.SetAsLastSibling();
+
+            // Disable raycast while dragging
+            if (cloneItem.image != null)
+                cloneItem.image.raycastTarget = false;
+
+            // Tell EventSystem to drag the clone instead
+            eventData.pointerDrag = clone;
+
+            return;
+        }
+
+        // ===============================
+        // NORMAL DRAG
+        // ===============================
         parentAfterDrag = transform.parent;
 
-        // Move item to top level so it can drag over UI
         transform.SetParent(canvas.transform);
         transform.SetAsLastSibling();
 
-        // Disable raycast so it doesn't block UI during drag
         if (image != null)
             image.raycastTarget = false;
 
-        // Remove from previous slot if exists
+        // Remove from previous slot if needed
         if (!string.IsNullOrEmpty(currentSlotID))
         {
             if (GameManager.Instance.slotItemMap.ContainsKey(currentSlotID))
-            {
                 GameManager.Instance.slotItemMap.Remove(currentSlotID);
-            }
+
             currentSlotID = "";
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (rectTransform == null) return;
+        if (rectTransform == null || canvas == null) return;
 
-        // Move item based on mouse/finger
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Snap item back to its parent (slot or spawn)
         transform.SetParent(parentAfterDrag);
         rectTransform.anchoredPosition = Vector2.zero;
 
@@ -84,7 +110,6 @@ public class DraggableItem : MonoBehaviour,
         transform.SetParent(slotTransform);
         rectTransform.anchoredPosition = Vector2.zero;
 
-        // Update slot map for persistence
         GameManager.Instance.slotItemMap[slotID] = itemID;
     }
 }
