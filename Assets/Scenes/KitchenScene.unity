@@ -2871,7 +2871,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9672227e6ece19c48afe68bff4f8e1ca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3b27d467d24d59446b30b5757e38a964, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3856,7 +3856,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4d8f1aee867854e47bc70a15d7854039, type: 3}
+      objectReference: {fileID: 21300000, guid: a104addf0ea99d54a89dc79cc1b9b934, type: 3}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
       value: RollDoughSlot
@@ -4088,7 +4088,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 61b0a077212fa3942a7d882947f0def3, type: 3}
+      objectReference: {fileID: 21300000, guid: 196a973e20e333b479552e9f598e4f06, type: 3}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
       value: ChoppingSlot (1)
@@ -6064,7 +6064,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 5f8c5a61c4c5fa443ae2e0485ac658c9, type: 3}
+      objectReference: {fileID: 21300000, guid: 536e9afb8408e664ab55517721f66a84, type: 3}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
       value: Pot
@@ -6707,7 +6707,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 031de3edd8e01d04bbeed0179c834003, type: 3}
+      objectReference: {fileID: 21300000, guid: 19347a5eee37fa0448650538efd5832a, type: 3}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
       value: ThymeDoughInBowl
@@ -6791,7 +6791,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ef1c49ec1045a0446804a03a9dc79f5b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ddb30e6e682e78742ae8f231e2af4793, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6932,7 +6932,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 083f75b4899e30b408fd371f41c94ae3, type: 3}
+      objectReference: {fileID: 21300000, guid: 410650febcc6df948947b28a76631d0c, type: 3}
     - target: {fileID: 7666000392988919329, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Name
       value: DoughOnTraySlot
@@ -7960,7 +7960,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 64ba0bc2cd88f684da332ca61f109b1a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ccef08a8b23f2c441801cc764ad2144c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9087,7 +9087,7 @@ PrefabInstance:
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 14439d1921f49bd478422b576343948a, type: 3}
+      objectReference: {fileID: 21300000, guid: e80f8a0cf065781428c7ada608d86aad, type: 3}
     - target: {fileID: 4610581825987817548, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -9831,7 +9831,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -11.428711, y: 146.71425}
-  m_SizeDelta: {x: 165.2, y: 50}
+  m_SizeDelta: {x: 168.83, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2141886946
 MonoBehaviour:
@@ -9880,8 +9880,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.7
-  m_fontSizeBase: 17.7
+  m_fontSize: 15.19
+  m_fontSizeBase: 15.19
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
