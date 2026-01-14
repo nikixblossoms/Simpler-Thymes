@@ -26,6 +26,8 @@ public class KitchenManager : MonoBehaviour
         FormDough,
         Bake,
         LetBreadRest,
+
+        GiveCustomer,
     }
 
     // =========================
@@ -198,22 +200,6 @@ public class KitchenManager : MonoBehaviour
         SpawnItemForCurrentStep();
     }
 
-    public bool CanDoStep(KitchenManager.RecipeStep step)
-    {
-        // Allow if step exists and not completed yet
-        for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
-        {
-            if (!completedSteps[i] && currentRecipe.requiredSteps[i] == step)
-            {
-                Debug.Log($"[DEBUG] Step '{step}' is allowed (incomplete at index {i})");
-                return true;
-            }
-        }
-
-        Debug.Log($"[DEBUG] Step '{step}' is NOT allowed, all matching steps complete or not in recipe");
-        return false;
-    }
-
 
 
 
@@ -237,11 +223,21 @@ public class KitchenManager : MonoBehaviour
     // =========================
     bool CheckRecipeComplete()
     {
-        foreach (bool done in completedSteps)
-            if (!done) return false;
+        for (int i = 0; i < currentRecipe.requiredSteps.Length; i++)
+        {
+            RecipeStep step = currentRecipe.requiredSteps[i];
+
+            // Skip final action step
+            if (step == RecipeStep.GiveCustomer)
+                continue;
+
+            if (!completedSteps[i])
+                return false;
+        }
 
         return true;
     }
+
 
     // =========================
     // FINISH / FAIL
@@ -522,9 +518,9 @@ public class KitchenManager : MonoBehaviour
         SetButtonState(formDoughButton, IsCurrentStep(RecipeStep.FormDough));
         SetButtonState(bakeButton, IsCurrentStep(RecipeStep.Bake));
         SetButtonState(bakedGoodButton, IsCurrentStep(RecipeStep.LetBreadRest));
-
+        SetButtonState(giveCustomerButton, IsCurrentStep(RecipeStep.GiveCustomer));
         // Always visible
-        SetButtonState(giveCustomerButton, true);
+        // SetButtonState(giveCustomerButton, true);
     }
 
     // =========================

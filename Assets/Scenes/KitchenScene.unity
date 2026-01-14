@@ -1295,7 +1295,7 @@ PrefabInstance:
       objectReference: {fileID: 952965915}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: stepForThisSlot
-      value: 10
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4593156402485399170, guid: 3d56b8e77308db74dbd1833219fa0a84, type: 3}
       propertyPath: showWhenCompleted
@@ -5288,7 +5288,7 @@ MonoBehaviour:
   recipes:
   - recipeName: Herbed Bread
     thymeRequired: 4
-    requiredSteps: 060000000100000008000000090000000a0000000b0000000c000000
+    requiredSteps: 060000000100000008000000090000000a0000000b0000000c0000000d000000
   orderText: {fileID: 2141886946}
   warningText: {fileID: 392094944}
   warningIcon: {fileID: 347859739}
@@ -5350,6 +5350,9 @@ MonoBehaviour:
   - step: 12
     prefab: {fileID: 9150875547780903312, guid: 325c72fe3a863124a887c0f3ca2ad717, type: 3}
     spawnParent: {fileID: 2138352855}
+  - step: 13
+    prefab: {fileID: 9150875547780903312, guid: 325c72fe3a863124a887c0f3ca2ad717, type: 3}
+    spawnParent: {fileID: 591183482}
   bubbleDisplayTime: 2
 --- !u!4 &952965916
 Transform:

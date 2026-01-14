@@ -14,8 +14,9 @@ public class SlotScript : MonoBehaviour, IDropHandler
     void Awake()
     {
         if (kitchenManager == null)
-            kitchenManager = FindObjectOfType<KitchenManager>();
+            Debug.LogError("KitchenManager not assigned in Inspector!");
     }
+
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -25,34 +26,26 @@ public class SlotScript : MonoBehaviour, IDropHandler
         DraggableItem item = dropped.GetComponent<DraggableItem>();
         if (item == null) return;
 
-        // Spawned clone from source
-        if (item.isSourceItem)
-        {
-            Debug.Log("[DROP WARNING] Source item should be a clone! Make sure OnBeginDrag spawns a clone.");
-        }
-
-        // Check Give Customer slot
         if (isGiveCustomerSlot)
         {
             kitchenManager.GiveToCustomer();
+            return;
         }
-        else
+
+        // ORDERED STEP CHECK
+        if (!kitchenManager.IsCurrentStep(stepForThisSlot))
         {
-            // Check if step is valid
-            if (!kitchenManager.CanDoStep(stepForThisSlot))
-            {
-                return;
-            }
-
-            kitchenManager.DoStep(stepForThisSlot);
+            return;
         }
 
-        // Move item to slot
-        item.parentAfterDrag = transform;
-        item.currentSlotID = name;
-        item.transform.SetParent(transform);
-        item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        kitchenManager.DoStep(stepForThisSlot);
+
+    
+        Destroy(item.gameObject);
+
     }
+
 
 
 }

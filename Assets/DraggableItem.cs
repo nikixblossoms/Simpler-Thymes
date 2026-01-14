@@ -22,8 +22,6 @@ public class DraggableItem : MonoBehaviour,
     public GameObject sourcePrefab;            // Prefab to clone
     public Transform sourceParent;              // Where source lives
 
-    // Internal
-    private bool isClone = false;
 
     void Awake()
     {
@@ -36,35 +34,6 @@ public class DraggableItem : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // ===============================
-        // SOURCE ITEM → SPAWN CLONE
-        // ===============================
-        if (isSourceItem)
-        {
-            GameObject clone = Instantiate(sourcePrefab, sourceParent);
-            DraggableItem cloneItem = clone.GetComponent<DraggableItem>();
-
-            cloneItem.isSourceItem = false;
-            cloneItem.isClone = true;
-            cloneItem.parentAfterDrag = transform.parent;
-
-            // Move clone to canvas so it can be dragged
-            clone.transform.SetParent(canvas.transform);
-            clone.transform.SetAsLastSibling();
-
-            // Disable raycast while dragging
-            if (cloneItem.image != null)
-                cloneItem.image.raycastTarget = false;
-
-            // Tell EventSystem to drag the clone instead
-            eventData.pointerDrag = clone;
-
-            return;
-        }
-
-        // ===============================
-        // NORMAL DRAG
-        // ===============================
         parentAfterDrag = transform.parent;
 
         transform.SetParent(canvas.transform);
@@ -72,16 +41,10 @@ public class DraggableItem : MonoBehaviour,
 
         if (image != null)
             image.raycastTarget = false;
+            image.color = new Color(1f, 1f, 1f, 0.8f);
 
-        // Remove from previous slot if needed
-        if (!string.IsNullOrEmpty(currentSlotID))
-        {
-            if (GameManager.Instance.slotItemMap.ContainsKey(currentSlotID))
-                GameManager.Instance.slotItemMap.Remove(currentSlotID);
-
-            currentSlotID = "";
-        }
     }
+
 
     public void OnDrag(PointerEventData eventData)
     {
